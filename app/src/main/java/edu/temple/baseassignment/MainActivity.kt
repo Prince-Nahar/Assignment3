@@ -1,9 +1,11 @@
 package edu.temple.baseassignment
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.BaseAdapter
 import android.widget.Spinner
 import android.widget.TextView
@@ -14,15 +16,42 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val colors = arrayOf("Red", "White", "Blue", "Gray", "Purple", "Green", "Yellow", "Magenta", "Silver", "Cyan", "Navy")
+        val colors = arrayOf(
+            "Select a color",
+            "Red",
+            "White",
+            "Blue",
+            "Gray",
+            "Purple",
+            "Green",
+            "Yellow",
+            "Magenta",
+            "Silver",
+            "Cyan",
+            "Navy"
+        )
         val spinner = findViewById<Spinner>(R.id.spinner)
-        val canvas = findViewById<View>(R.id.colorDisplay)
+        val layout = findViewById<View>(R.id.main)
 
-        spinner.adapter = ColorAdapter(this , colors)
+        spinner.adapter = ColorAdapter(this, colors)
 
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val selectedColor = colors[position]
+
+                // Check if a valid color is selected (skip "Select a color")
+                if (selectedColor != "Select a color") {
+                    // Change the layout background to the selected color
+                    layout.setBackgroundColor(Color.parseColor(selectedColor))
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // Do nothing
+            }
+        }
     }
 }
-
 class ColorAdapter(_context: Context, _colors: Array<String>) : BaseAdapter(){
 
     private val context = _context
@@ -45,6 +74,9 @@ class ColorAdapter(_context: Context, _colors: Array<String>) : BaseAdapter(){
         textView.text = colors[p0]
         textView.textSize = 22f
         textView.setPadding(5, 10, 0, 10)
+        textView.setBackgroundColor(Color.WHITE)
+
+
         return textView
     }
 
