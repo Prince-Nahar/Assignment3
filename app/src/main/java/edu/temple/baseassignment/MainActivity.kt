@@ -1,10 +1,12 @@
 package edu.temple.baseassignment
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.Spinner
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
@@ -16,24 +18,34 @@ class MainActivity : AppCompatActivity() {
         val spinner = findViewById<Spinner>(R.id.spinner)
         val canvas = findViewById<View>(R.id.colorDisplay)
 
+        spinner.adapter = ColorAdapter(this , colors)
+
     }
 }
 
-class ColorAdapter : BaseAdapter(){
+class ColorAdapter(_context: Context, _colors: Array<String>) : BaseAdapter(){
+
+    private val context = _context
+    private val colors = _colors
+
     override fun getCount(): Int {
-        TODO("Not yet implemented")
+        return colors.size
     }
 
     override fun getItem(p0: Int): Any {
-        TODO("Not yet implemented")
+        return colors[p0]
     }
 
     override fun getItemId(p0: Int): Long {
-        TODO("Not yet implemented")
+        return p0.toLong()
     }
 
     override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View {
-        TODO("Not yet implemented")
+        val textView = TextView(context)
+        textView.text = colors[p0]
+        textView.textSize = 22f
+        textView.setPadding(5, 10, 0, 10)
+        return textView
     }
 
 }
